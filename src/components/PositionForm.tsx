@@ -220,6 +220,7 @@ const PositionForm: React.FC<PositionFormProps> = ({ onSubmit, initialValues = {
               onChange={handleChange}
               className="w-full border p-2 rounded"
               rows={3}
+              required
             />
           </div>
 
