@@ -13,9 +13,9 @@ export const getPositions = async (params = {}) => {
   };
   
   
-export const getPosition = (id: number) => api.get(`/positions/${id}`); // Obtener una posición por ID
+export const getPosition = (id: number) => api.get(`/positions/${id}`);
 
 export const updatePosition = (id: number, data: any) =>
-  api.put(`/positions/${id}`, { position: data }); // Actualizar una posición
+  api.put(`/positions/${id}`, { position: data });
 
 export const deletePosition = (id: number) => api.delete(`/positions/${id}`);

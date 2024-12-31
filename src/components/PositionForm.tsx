@@ -23,14 +23,14 @@ const PositionForm: React.FC<PositionFormProps> = ({ onSubmit, initialValues = {
     status: initialValues.status || 'Open',
   });
 
-  const [clients, setClients] = useState<Client[]>([]); // State to store clients
-  const [loading, setLoading] = useState(true); // Loading state for the dropdown
+  const [clients, setClients] = useState<Client[]>([]);
+  const [loading, setLoading] = useState(true);
 
   // Fetch clients on component mount
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const response = await fetch('http://localhost:3000/clients'); // URL completa
+        const response = await fetch('http://localhost:3000/clients');
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
