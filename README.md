@@ -11,8 +11,8 @@ Este proyecto es el frontend de un sistema de gestión de posiciones de trabajo.
 
 ## Requisitos
 
-- Node.js (v16 o superior)
-- npm o yarn
+- Node.js
+- npm
 
 ## Instalación
 
