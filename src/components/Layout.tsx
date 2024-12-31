@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { FiMenu } from 'react-icons/fi'; // Importa el ícono de menú (tres líneas horizontales)
+import { FiMenu } from 'react-icons/fi';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,7 +17,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary"
             >
-              {/* Tres líneas horizontales */}
               <FiMenu className="text-primary" size={24} />
             </button>
             {/* Dropdown Menu */}

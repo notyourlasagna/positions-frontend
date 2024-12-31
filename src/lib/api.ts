@@ -11,8 +11,7 @@ export const getPositions = async (params = {}) => {
     const url = `/positions?${query}`;
     return await api.get(url);
   };
-  
-  
+
 export const getPosition = (id: number) => api.get(`/positions/${id}`);
 
 export const updatePosition = (id: number, data: any) =>

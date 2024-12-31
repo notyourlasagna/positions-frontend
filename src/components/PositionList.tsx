@@ -50,12 +50,12 @@ const PositionList: React.FC = () => {
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setSearchQuery(query);
-    setCurrentPage(1); // Reset to first page
+    setCurrentPage(1);
   };
 
   const handleStatusFilter = (status: string | null) => {
     setStatusFilter(status);
-    setCurrentPage(1); // Reset to first page
+    setCurrentPage(1);
   };
 
   const handlePageChange = (newPage: number) => {
@@ -69,7 +69,7 @@ const PositionList: React.FC = () => {
       try {
         await deletePosition(id);
         alert('Position deleted successfully!');
-        fetchPositions(currentPage, searchQuery, statusFilter); // Refetch after deletion
+        fetchPositions(currentPage, searchQuery, statusFilter);
       } catch (error) {
         console.error('Error deleting position:', error);
         alert('Failed to delete position');
@@ -194,7 +194,7 @@ const PositionList: React.FC = () => {
                 <td className="px-6 py-4 text-center">
                   <button
                     onClick={(e) => {
-                      e.stopPropagation(); // Prevent row navigation
+                      e.stopPropagation();
                       handleDelete(position.id);
                     }}
                     className="text-red-500 hover:text-red-700"
