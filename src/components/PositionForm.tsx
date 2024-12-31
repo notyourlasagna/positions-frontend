@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface PositionFormProps {
   onSubmit: (data: any) => void;
   initialValues?: any;
+}
+
+interface Client {
+  id: number;
+  name: string;
 }
 
 const PositionForm: React.FC<PositionFormProps> = ({ onSubmit, initialValues = {} }) => {
@@ -17,6 +22,29 @@ const PositionForm: React.FC<PositionFormProps> = ({ onSubmit, initialValues = {
     benefits: initialValues.benefits || '',
     status: initialValues.status || 'Open',
   });
+
+  const [clients, setClients] = useState<Client[]>([]); // State to store clients
+  const [loading, setLoading] = useState(true); // Loading state for the dropdown
+
+  // Fetch clients on component mount
+  useEffect(() => {
+    const fetchClients = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/clients'); // URL completa
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        setClients(data);
+      } catch (error) {
+        console.error('Error fetching clients:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchClients();
+  }, []);  
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -42,17 +70,27 @@ const PositionForm: React.FC<PositionFormProps> = ({ onSubmit, initialValues = {
         {/* Card Body */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div className="grid grid-cols-2 gap-4">
-            {/* Client ID */}
+            {/* Client Dropdown */}
             <div>
-              <label className="block text-gray-600 font-medium mb-2">Client ID</label>
-              <input
-                type="number"
-                name="client_id"
-                value={formData.client_id}
-                onChange={handleChange}
-                className="w-full border p-2 rounded"
-                required
-              />
+              <label className="block text-gray-600 font-medium mb-2">Client</label>
+              {loading ? (
+                <p className="text-gray-500">Loading clients...</p>
+              ) : (
+                <select
+                  name="client_id"
+                  value={formData.client_id}
+                  onChange={handleChange}
+                  className="w-full border p-2 rounded"
+                  required
+                >
+                  <option value="">Select a client</option>
+                  {clients.map((client) => (
+                    <option key={client.id} value={client.id}>
+                      {client.name}
+                    </option>
+                  ))}
+                </select>
+              )}
             </div>
 
             {/* Title */}

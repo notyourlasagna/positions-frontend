@@ -94,15 +94,15 @@ const PositionDetail: React.FC = () => {
               <p>{new Date(position.created_at).toLocaleDateString()}</p>
             </div>
           </div>
-
-          <div>
-            <p className="text-gray-600 font-semibold">Benefits</p>
-            <p>{position.benefits}</p>
-          </div>
           <div>
             <p className="text-gray-600 font-semibold">Description</p>
             <p>{position.description}</p>
           </div>
+          <div>
+            <p className="text-gray-600 font-semibold">Benefits</p>
+            <p>{position.benefits}</p>
+          </div>
+          
         </div>
 
         {/* Card Footer */}
