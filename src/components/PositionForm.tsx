@@ -25,8 +25,10 @@ const PositionForm: React.FC<PositionFormProps> = ({ onSubmit, initialValues = {
 
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
+  const [prompt, setPrompt] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  // Fetch clients on component mount
+
   useEffect(() => {
     const fetchClients = async () => {
       try {
@@ -42,15 +44,41 @@ const PositionForm: React.FC<PositionFormProps> = ({ onSubmit, initialValues = {
         setLoading(false);
       }
     };
-  
+
     fetchClients();
-  }, []);  
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handlePromptSubmit = async () => {
+    setIsProcessing(true);
+    try {
+      const response = await fetch('http://localhost:3000/ai/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt }),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+
+      setFormData({
+        ...formData,
+        title: data.title || formData.title,
+        description: data.description || formData.description,
+        benefits: data.benefits || formData.benefits,
+      });
+    } catch (error) {
+      console.error('Error processing prompt:', error);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -69,6 +97,25 @@ const PositionForm: React.FC<PositionFormProps> = ({ onSubmit, initialValues = {
 
         {/* Card Body */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          {/* Prompt Input */}
+          <div className="flex items-center space-x-4">
+            <input
+              type="text"
+              placeholder="Enter prompt for AI to generate data..."
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              className="w-full border p-2 rounded"
+            />
+            <button
+              type="button"
+              onClick={handlePromptSubmit}
+              className="px-6 py-2 bg-primary text-white rounded hover:bg-primary-600"
+              disabled={isProcessing}
+            >
+              {isProcessing ? 'Processing...' : 'Use AI'}
+            </button>
+          </div>
+
           <div className="grid grid-cols-2 gap-4">
             {/* Client Dropdown */}
             <div>
@@ -158,6 +205,7 @@ const PositionForm: React.FC<PositionFormProps> = ({ onSubmit, initialValues = {
                 value={formData.salary}
                 onChange={handleChange}
                 className="w-full border p-2 rounded"
+                min={0}
                 required
               />
             </div>
